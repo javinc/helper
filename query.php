@@ -31,12 +31,6 @@ class Query {
 		return $con;
 	}
 
-	/*
-	 * ex.
-	 *		$values = array('name' => 'James', 'email' => 'Bin');
-	 *		$where = array('id' => '2', 'name!' => '2');
-	 * 		update($values,$where, 'member')
-	 */
 	public function update(array $data, $where) {
 		$b = $this->checkWhere($where);
 		$v = ' WHERE '.$b;
@@ -47,13 +41,6 @@ class Query {
 		return $this->query($z.$x.$c.$v);
 	}
 
-	/*
-	 * ex.
-	 *		$columns = array( 'name', 'email');
-	 *		$where = array( 'id' => '2' );
-	 * 		select($where, $columns, 'member'); or set_table('member');
-	 *		select($where); or select();
-	 */
 	public function select($where = '1', $columns = null) {
 		$b = $this->checkWhere($where);
 		$v = ' WHERE '.$b.' '.$this->orderBy.($this->limit ? $this->limit : null);
@@ -64,11 +51,6 @@ class Query {
 		return $this->returner($this->query($z.$x.$c.$v));
 	}
 
-	/*
-	 * ex.
-	 *		insert( array( 'name' => 'James', 'email' => 'Bin') ,'member')
-	 *		insert( array( NULL, 'James', 'Bin') ,'member')
-	 */
 	public function insert($data) {
 		$v = $this->extract($data,',');
 		$c = $this->isAssoc($data) ? " SET {$v}" : "values( {$v} )";
@@ -78,10 +60,6 @@ class Query {
 		return $this->query($z.$x.$c);
 	}
 
-	/*
-	 * ex.
-	 * 		delete(array( 'id!' => '2' ));
-	 */
 	public function delete($where) {
 		$c = $this->checkWhere($where);
 		$v = ' WHERE '.$c;
@@ -91,10 +69,6 @@ class Query {
 		return $this->query($z.$x.$v);
 	}
 
-	/*
-	 * ex.
-	 * 		search(array( 'id' => '2' ));
-	 */
 	public function search($where, $columns = null) {
 		
 		$b = $where;
