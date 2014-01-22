@@ -4,7 +4,7 @@
  *	Query v2.0;
  *	Basic query helper with database connection
  *	01-20-2014
- *	jAvinc02@gmail.com
+ *	jAvinc
  */
 class Query {
 
