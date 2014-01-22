@@ -1,5 +1,4 @@
 <?php //-->
-
 /*
  *	Query v2.0;
  *	Basic query helper with database connection
@@ -28,7 +27,8 @@ class Query {
 		$con = mysql_connect($setting['host'], $setting['user'], $setting['pass']) or die(mysql_error());
 		return $con == true ? mysql_select_db($setting['db'], $con) : die('Error in connect()');
 	}
-
+	
+	// update query
 	public function update(array $data, $where) {
 		$b = $this->checkWhere($where);
 		$v = ' WHERE '.$b;
@@ -38,7 +38,8 @@ class Query {
 
 		return $this->query($z.$x.$c.$v);
 	}
-
+	
+	// select query
 	public function select($where = '1', $columns = null) {
 		$b = $this->checkWhere($where);
 		$v = ' WHERE '.$b.' '.$this->orderBy.($this->limit ? $this->limit : null);
@@ -48,7 +49,8 @@ class Query {
 		
 		return $this->returner($this->query($z.$x.$c.$v));
 	}
-
+	
+	// insert query
 	public function insert($data) {
 		$v = $this->extract($data,',');
 		$c = $this->isAssoc($data) ? " SET {$v}" : "values( {$v} )";
@@ -57,7 +59,8 @@ class Query {
 		
 		return $this->query($z.$x.$c);
 	}
-
+	
+	// delete query
 	public function delete($where) {
 		$c = $this->checkWhere($where);
 		$v = ' WHERE '.$c;
@@ -66,7 +69,8 @@ class Query {
 		
 		return $this->query($z.$x.$v);
 	}
-
+	
+	// search method
 	public function search($where, $columns = null) {
 		
 		$b = $where;
