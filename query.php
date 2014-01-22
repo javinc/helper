@@ -16,7 +16,7 @@ class Query {
 	private $db = null;
 
 	// setting defatuls
-	public function __construct($table = null, $db = null) {
+	public function __construct($db = null, $table = null) {
 		$this->table = $table;
 		$this->db = $db;
 
@@ -26,9 +26,7 @@ class Query {
 	// db connection
 	public function connect($setting) {
 		$con = mysql_connect($setting['host'], $setting['user'], $setting['pass']) or die(mysql_error());
-		$con == true ? mysql_select_db($setting['db'], $con) : die('Error in connect()');
-
-		return $con;
+		return $con == true ? mysql_select_db($setting['db'], $con) : die('Error in connect()');
 	}
 
 	public function update(array $data, $where) {
@@ -127,6 +125,10 @@ class Query {
 
 		// trap when table is null
 		if($this->table) {
+			if($this->db) {
+				return mysql_query($query, $this->db);
+			}
+
 			return mysql_query($query);
 		}
 
@@ -145,7 +147,7 @@ class Query {
 			$arr[] = $row;
 		}
 		
-		return count($arr) == 1 ? current($arr) : $arr;
+		return $arr;
 	}
 
 	// check if assoc array
