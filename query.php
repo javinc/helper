@@ -7,16 +7,17 @@
  */
 class Query {
 
+	private $db = null;
+	private $table = null;
+	private $defaultTable = null;
 	private $debug = false;
 	private $orderBy = null;
-	private $table = null;
 	private $limit = null;
 	private $join = null;
-	private $db = null;
 
 	// setting defatuls
 	public function __construct($db = null, $table = null) {
-		$this->table = $table;
+		$this->table = $this->defaultTable = $table;
 		$this->db = $db;
 
 		return $this;
@@ -38,10 +39,10 @@ class Query {
 		return $this->query($z.$x.$c.$v);
 	}
 
-	public function select($where = '1', $columns = null) {
-		$b = $this->checkWhere($where);
+	public function select($where = '1', $columns = null, $op = 'AND') {
+		$b = $this->checkWhere($where, $op);
 		$v = ' WHERE '.$b.' '.$this->orderBy.($this->limit ? $this->limit : null);
-		$c = 'FROM '.$this->table.($this->join ? $this->join : null);
+		$c = 'FROM '.$this->table.' '.($this->join ? $this->join : null);
 		$x = $columns == null ? ' * ' : $this->extract($columns,',','`');
 		$z = 'SELECT ';
 		
@@ -74,7 +75,7 @@ class Query {
 		}
 		
 		$v = ' WHERE '.$b.' '.$this->orderBy.($this->limit ? $this->limit : null);
-		$c = 'FROM '.$this->table.($this->join ? $this->join : null);
+		$c = 'FROM '.$this->table.' '.($this->join ? $this->join : null);
 		$x = $columns == null ? ' * ' : $this->extract($columns,',','`');
 		$z = 'SELECT ';
 		
@@ -103,7 +104,7 @@ class Query {
 	}
 
 	// set limit
-	public function setLimit(int $start, int $end){
+	public function setLimit(int $start, int $end) {
 		$this->limit = ' LIMIT '.$start.' , '.$end;
 
 		return $this;
@@ -118,6 +119,12 @@ class Query {
 
 	// query
 	public function query($query) {
+		// reset vars
+		$this->orderBy = null;
+		$this->limit = null;
+		$this->join = null;
+		$this->table = $this->defaultTable;
+
 		if($this->debug){
 			echo $query.'<br>';
 		}
@@ -178,6 +185,6 @@ class Query {
 
 	// clean inputs
 	private function clean($data){
-		return mysql_real_escape_string(htmlentities($data));
+		return mysql_real_escape_string(htmlentities(trim($data)));
 	}
 }
