@@ -18,7 +18,9 @@ class Query {
 	// setting defatuls
 	public function __construct($db = null, $table = null) {
 		$this->table = $this->defaultTable = $table;
-		$this->db = $db;
+		
+		// check if credential not resource
+		$this->db = is_array($db) ? $this->connect($db) : $db;
 
 		return $this;
 	}
