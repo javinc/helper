@@ -4,22 +4,27 @@ php-helper
 Symply Query helper for Lazy! 
 
 Searching
+
 	search(array( 'id!' => '2' ));
 
 Deleting
+
 	delete(array( 'id' => '2' ));
 
 Inserting
+
 	insert( array( 'name' => 'James', 'email' => 'Bin') ,'member')
 	insert( array( NULL, 'James', 'Bin') ,'member')
  
 Updating
+
 	$values = array('name' => 'James', 'email' => 'Bin');
 	$where = array('id' => '2', 'name!' => '2');
 
 	update($values, $where, 'member')
 
 Selecting
+
 	$columns = array( 'name', 'email');
 	$where = array( 'id' => '2' );
 
@@ -30,6 +35,7 @@ Selecting
 	select();
 
 Instantiation
+
 	$credentials = array(
 		'host' => 'localhost',
 		'user' => 'root',
